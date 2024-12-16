@@ -4,7 +4,8 @@ import pandas as pd
 import gspread
 
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-credentials = gspread.authorize(Credentials.from_service_account_file("data/pivot-table-444701-8d9e0fe26d6e.json", scopes = scope))
+credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+credentials = gspread.authorize(Credentials.from_service_account_file(credentials_path, scopes = scope))
 def read_file(name,sheet):
   worksheet = credentials.open(name).worksheet(sheet)
   rows = worksheet.get_all_values()
