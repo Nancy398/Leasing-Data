@@ -4,8 +4,8 @@ import pandas as pd
 import gspread
 import os
 
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+# scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+# credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
 credentials = Credentials.from_service_account_info(
     st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
     scopes=["https://www.googleapis.com/auth/spreadsheets"]
