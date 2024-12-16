@@ -4,14 +4,15 @@ import pandas as pd
 import gspread
 import os
 
-# scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-# credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 credentials = Credentials.from_service_account_info(
     st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
-    scopes=["https://www.googleapis.com/auth/spreadsheets"]
+    scopes=scope
 )
+gc = gspread.authorize(credentials)
+
 def read_file(name,sheet):
-  worksheet = credentials.open(name).worksheet(sheet)
+  worksheet = gc.open(name).worksheet(sheet)
   rows = worksheet.get_all_values()
   df = pd.DataFrame.from_records(rows)
   df = pd.DataFrame(df.values[1:], columns=df.iloc[0])
