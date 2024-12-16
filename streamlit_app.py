@@ -6,7 +6,10 @@ import os
 
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
-credentials = gspread.authorize(Credentials.from_service_account_file(credentials_path, scopes = scope))
+credentials = Credentials.from_service_account_info(
+    st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
+    scopes=["https://www.googleapis.com/auth/spreadsheets"]
+)
 def read_file(name,sheet):
   worksheet = credentials.open(name).worksheet(sheet)
   rows = worksheet.get_all_values()
