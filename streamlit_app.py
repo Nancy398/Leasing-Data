@@ -2,6 +2,7 @@ import streamlit as st
 from google.oauth2.service_account import Credentials
 import pandas as pd
 import gspread
+import os
 
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 credentials_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
