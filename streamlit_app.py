@@ -20,7 +20,7 @@ def read_file(name,sheet):
 
 st.title('Leasing Data')
 
-Leasing_US = read_file("US","Dec")
+Leasing_US = read_file("MOO HOUSING PRICING SHEET","December Leasing Tracker")
 Leasing_US['Tenant Name'] = Leasing_US['Tenant Name'].replace('', pd.NA)
 # Leasing_US = Leasing_US.drop(columns=[''])
 Leasing_US = Leasing_US.dropna()
