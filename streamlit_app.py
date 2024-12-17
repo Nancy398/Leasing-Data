@@ -9,20 +9,20 @@ st.markdown(
     <style>
         /* 更改 multiselect 组件的字体 */
         div.stMultiSelect > div > div {
-            font-family: 'Times New Roman', sans-serif;  /* 字体类型 */
+            font-family: 'Courier New', sans-serif;  /* 字体类型 */
             font-size: 16px;  /* 字体大小 */
         }
         
         /* 更改 multiselect 中选中项的字体 */
         div.stMultiSelect > div > div > div > div {
-            font-family: 'Times New Roman', monospace;
+            font-family: 'Courier New', monospace;
             font-size: 18px;
             font-weight: bold;
         }
 
         /* 更改 multiselect 按钮的字体 */
         div.stMultiSelect > div > div > div > button {
-            font-family: 'Times New Roman', sans-serif;
+            font-family: 'Courier New', sans-serif;
             font-size: 14px;
             font-weight: normal;
         }
