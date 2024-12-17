@@ -4,6 +4,33 @@ import pandas as pd
 import gspread
 import os
 
+st.markdown(
+    """
+    <style>
+        /* 更改 multiselect 组件的字体 */
+        div.stMultiSelect > div > div {
+            font-family: 'Times New Roman', sans-serif;  /* 字体类型 */
+            font-size: 16px;  /* 字体大小 */
+        }
+        
+        /* 更改 multiselect 中选中项的字体 */
+        div.stMultiSelect > div > div > div > div {
+            font-family: 'Times New Roman', monospace;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* 更改 multiselect 按钮的字体 */
+        div.stMultiSelect > div > div > div > button {
+            font-family: 'Times New Roman', sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 credentials = Credentials.from_service_account_info(
     st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
