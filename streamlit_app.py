@@ -193,8 +193,8 @@ df_reshaped = generate_pivot_table(df_filtered,row_options,column_options)
 # # Display the data as a table using `st.dataframe`.
 st.write('Leasing Data')
 st.dataframe(
-    df_reshaped
-    # use_container_width=True,
+    df_reshaped,
+    use_container_width=True,
     # column_config={"selected_dates": st.column_config.TextColumn("Time")},
 )
 styled_pivot_table = df_reshaped.style.set_table_styles(
