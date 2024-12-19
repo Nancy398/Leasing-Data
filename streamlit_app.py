@@ -202,6 +202,19 @@ styled_pivot_table = df_reshaped.style.set_table_styles(
     [{'selector': 'thead th', 'props': [('text-align', 'center')]}]
 )
 
+Leasing['Signed Date'] = Leasing['Signed Date'].dt.strftime('%Y-%m-%d')
+target_spreadsheet_id = 'Leasing Database'  # 目标表格的ID
+target_sheet_name = 'Sheet1'  # 目标表格的工作表名称
+target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
+
+existing_data = target_sheet.get_all_values()
+
+existing_data_set = set(tuple(row) for row in existing_data[1:])
+
+new_data = [tuple(row) for row in Leasing_Dec.values if tuple(row) not in existing_data_set]
+if new_data:
+    last_row = len(existing_data) + 1
+    target_sheet.insert_rows(new_data, last_row)
 
 while True:
     st.write(f"Last Update: {time.strftime('%Y-%m-%d')}")
