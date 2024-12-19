@@ -84,7 +84,7 @@ Leasing_China = Leasing_China.drop(['Lease term and length','Term start','Term E
 Leasing = pd.concat([Leasing_US,Leasing_China], join='inner',ignore_index=True)
 
 def generate_pivot_table(df,index,columns):
-  Table = df.pivot_table(index=['Region','Agent'], columns=['Domestic','Term','Renewal','Term Catorgy'], values='Number of beds',aggfunc='sum',fill_value=0,margins=True)
+  Table = df.pivot_table(index=index, columns=columns, values='Number of beds',aggfunc='sum',fill_value=0,margins=True)
   Table = Table.astype(int)
   return Table
 
