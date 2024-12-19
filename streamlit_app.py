@@ -195,7 +195,10 @@ st.dataframe(
     use_container_width=True,
     # column_config={"selected_dates": st.column_config.TextColumn("Time")},
 )
-
+if st.checkbox("显示详细数据"):
+    st.dataframe(pivot_table)  # 显示完整数据透视表
+else:
+    st.write("展开以查看数据透视表。")
 
 while True:
     st.write(f"Last Update: {time.strftime('%Y-%m-%d')}")
