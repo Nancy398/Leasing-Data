@@ -186,6 +186,7 @@ st.write(f"你选择的日期区间是: 从 {selected_dates[0].strftime('%Y-%m-%
 
 # Filter the dataframe based on the widget input and reshape it.
 df_filtered = Leasing[(Leasing["Region"].isin(Region)) & (Leasing["Signed Date"].between(selected_dates[0],selected_dates[1]) & (Leasing["Term Catorgy"].isin(Term)) &(Leasing["Term"].isin(Category)) & (Leasing["Renewal"].isin(Renewal)))]
+st.sidebar.header("选择透视表展示")
 row_options = st.sidebar.multiselect('请选择展示行', options=['Region','Agent'], default=['Region'])
 column_options = st.sidebar.multiselect('请选择展示列', options=['Domestic','Term','Renewal','Term Catorgy'], default=['Domestic','Term','Renewal'])
 df_reshaped = generate_pivot_table(df_filtered,row_options,column_options)
