@@ -195,10 +195,13 @@ st.dataframe(
     use_container_width=True,
     # column_config={"selected_dates": st.column_config.TextColumn("Time")},
 )
+selected_columns = st.multiselect("选择显示列", options=df_reshaped.columns, default=df_reshaped.columns)
+
 if st.checkbox("显示详细数据"):
-    st.dataframe(pivot_table)  # 显示完整数据透视表
+    st.dataframe(df_reshaped[selected_columns])  # 显示用户选择的列
 else:
     st.write("展开以查看数据透视表。")
+
 
 while True:
     st.write(f"Last Update: {time.strftime('%Y-%m-%d')}")
