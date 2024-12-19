@@ -134,6 +134,8 @@ import time
 
 # df = load_data()
 
+Leasing_all = read_file('Leasing Database','Sheet1')
+
 # # Show a multiselect widget with the genres using `st.multiselect`.
 Region = st.multiselect(
     "选择地区",
@@ -169,7 +171,7 @@ Domestic =  st.multiselect(
 from datetime import datetime
 
 # 设置起始日期和结束日期
-start_date = datetime(2024, 12, 1)  # 2024年12月1日
+start_date = datetime(2024, 11, 1)  # 2024年11月1日
 end_date = datetime(2024, 12, 31)  # 2024年12月31日
 
 # 创建日期区间选择器
@@ -185,7 +187,7 @@ selected_dates = st.slider(
 st.write(f"你选择的日期区间是: 从 {selected_dates[0].strftime('%Y-%m-%d')} 到 {selected_dates[1].strftime('%Y-%m-%d')}")
 
 # Filter the dataframe based on the widget input and reshape it.
-df_filtered = Leasing[(Leasing["Region"].isin(Region)) & (Leasing["Signed Date"].between(selected_dates[0],selected_dates[1]) & (Leasing["Term Catorgy"].isin(Term)) &(Leasing["Term"].isin(Category)) & (Leasing["Renewal"].isin(Renewal)))]
+df_filtered = Leasing_all[(Leasing_all["Region"].isin(Region)) & (Leasing_all["Signed Date"].between(selected_dates[0],selected_dates[1]) & (Leasing_all["Term Catorgy"].isin(Term)) &(Leasing_all["Term"].isin(Category)) & (Leasing_all["Renewal"].isin(Renewal)))]
 st.sidebar.header("选择透视表展示")
 row_options = st.sidebar.multiselect('请选择展示行', options=['Region','Agent'], default=['Region'])
 column_options = st.sidebar.multiselect('请选择展示列', options=['Domestic','Term','Renewal','Term Catorgy'], default=['Domestic','Term','Renewal'])
