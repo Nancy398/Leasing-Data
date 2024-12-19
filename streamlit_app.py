@@ -91,16 +91,16 @@ def generate_pivot_table(df,index,columns):
 from datetime import datetime
 from datetime import datetime, timedelta
 import time
-today = datetime.now()
-last_week = today - timedelta(weeks=1)
-today_date = today.strftime('%Y-%m-%d')
-last_week_date = last_week.strftime('%Y-%m-%d')
-Leasing_Weekly = Leasing.loc[Leasing['Signed Date'].between(last_week_date,today_date) ]
+# today = datetime.now()
+# last_week = today - timedelta(weeks=1)
+# today_date = today.strftime('%Y-%m-%d')
+# last_week_date = last_week.strftime('%Y-%m-%d')
+# Leasing_Weekly = Leasing.loc[Leasing['Signed Date'].between(last_week_date,today_date) ]
 
-Table = generate_pivot_table(Leasing_Weekly)
-Table_All = generate_pivot_table(Leasing)
-Table = Table.replace(0,"")
-Table_All = Table_All.replace(0,"")
+# Table = generate_pivot_table(Leasing_Weekly)
+# Table_All = generate_pivot_table(Leasing)
+# Table = Table.replace(0,"")
+# Table_All = Table_All.replace(0,"")
 
 # st.title("动态更新时间戳")
 # while True:
