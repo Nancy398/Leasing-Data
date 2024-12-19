@@ -83,7 +83,7 @@ Leasing_China['Signed Date'] = pd.to_datetime(Leasing_China['Signed Date'],forma
 Leasing_China = Leasing_China.drop(['Lease term and length','Term start','Term Ends'],axis=1)
 Leasing = pd.concat([Leasing_US,Leasing_China], join='inner',ignore_index=True)
 
-def generate_pivot_table(df):
+def generate_pivot_table(df,index,columns):
   Table = df.pivot_table(index=['Region','Agent'], columns=['Domestic','Term','Renewal','Term Catorgy'], values='Number of beds',aggfunc='sum',fill_value=0,margins=True)
   Table = Table.astype(int)
   return Table
@@ -186,7 +186,9 @@ st.write(f"你选择的日期区间是: 从 {selected_dates[0].strftime('%Y-%m-%
 
 # Filter the dataframe based on the widget input and reshape it.
 df_filtered = Leasing[(Leasing["Region"].isin(Region)) & (Leasing["Signed Date"].between(selected_dates[0],selected_dates[1]) & (Leasing["Term Catorgy"].isin(Term)) &(Leasing["Term"].isin(Category)) & (Leasing["Renewal"].isin(Renewal)))]
-df_reshaped = generate_pivot_table(df_filtered)
+row_options = st.sidebar.multiselect('请选择展示行', options=['Region','Agent', default=['Region'])
+column_options = st.sidebar.multiselect('请选择展示列', options=['Domestic','Term','Renewal','Term Catorgy'], default=['Domestic','Term','Renewal'])
+df_reshaped = generate_pivot_table(df_filtered,row_options,column_options)
 
 # # Display the data as a table using `st.dataframe`.
 st.write('Leasing Data')
