@@ -1,5 +1,7 @@
 * @streamlit/community-cloud
 
+name: Streamlit Deployment
+
 on:
   push:
     branches:
@@ -26,3 +28,4 @@ jobs:
     - name: Run Streamlit with debug logging
       run: |
         streamlit run app.py --logger.level=debug  # 启动 Streamlit 应用
+
