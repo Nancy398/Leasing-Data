@@ -135,6 +135,7 @@ import time
 # df = load_data()
 
 Leasing_all = read_file('Leasing Database','Sheet1')
+Leasing_all['Signed Date'] = datetime.strptime(Leasing_all['Signed Date'], '%Y-%m-%d')
 
 # # Show a multiselect widget with the genres using `st.multiselect`.
 Region = st.multiselect(
