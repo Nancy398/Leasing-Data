@@ -134,9 +134,7 @@ import time
 
 # df = load_data()
 
-target_spreadsheet_id = 'Leasing Database'  # 目标表格的ID
-target_sheet_name = 'Sheet1' 
-Leasing_all = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
+Leasing_all = read_file('Leasing Database','Sheet1')
 
 # # Show a multiselect widget with the genres using `st.multiselect`.
 Region = st.multiselect(
