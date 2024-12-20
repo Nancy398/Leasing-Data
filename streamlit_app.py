@@ -85,6 +85,7 @@ Leasing = pd.concat([Leasing_US,Leasing_China], join='inner',ignore_index=True)
 
 def generate_pivot_table(df,index,columns):
   Table = df.pivot_table(index=index, columns=columns, values='Number of beds',aggfunc='sum',fill_value=0,margins=True)
+  Table = pd.to_numeric(Table, errors='coerce')
   return Table
 
 from datetime import datetime
@@ -213,7 +214,7 @@ existing_data = target_sheet.get_all_values()
 
 existing_data_set = set(tuple(row) for row in existing_data[1:])
 
-new_data = [tuple(row) for row in Leasing_Dec.values if tuple(row) not in existing_data_set]
+new_data = [tuple(row) for row in Leasing.values if tuple(row) not in existing_data_set]
 if new_data:
     last_row = len(existing_data) + 1
     target_sheet.insert_rows(new_data, last_row)
