@@ -102,37 +102,6 @@ import time
 # Table = Table.replace(0,"")
 # Table_All = Table_All.replace(0,"")
 
-# st.title("动态更新时间戳")
-# while True:
-#     st.write(f"当前时间: {time.strftime('%Y-%m-%d')}")
-#     time.sleep(1000)  # 每秒更新一次
-#     st.rerun()
-    
-# st.title("Google Sheets 数据展示")
-# st.write(Table)
-# st.write(Table_All)
-
-# # Show the page title and description.
-# st.set_page_config(page_title="Movies dataset", page_icon="🎬")
-# st.title("🎬 Movies dataset")
-# st.write(
-#     """
-#     This app visualizes data from [The Movie Database (TMDB)](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata).
-#     It shows which movie genre performed best at the box office over the years. Just 
-#     click on the widgets below to explore!
-#     """
-# )
-
-
-# # Load the data from a CSV. We're caching this so it doesn't reload every time the app
-# # reruns (e.g. if the user interacts with the widgets).
-# @st.cache_data
-# def load_data():
-#     df = pd.read_csv("data/movies_genres_summary.csv")
-#     return df
-
-
-# df = load_data()
 
 Leasing_all = read_file('Leasing Database','Sheet1')
 Leasing_all['Number of beds'] = pd.to_numeric(Leasing_all['Number of beds'], errors='coerce')
@@ -206,19 +175,17 @@ styled_pivot_table = df_reshaped.style.set_table_styles(
     [{'selector': 'thead th', 'props': [('text-align', 'center')]}]
 )
 
-# Leasing['Signed Date'] = Leasing['Signed Date'].dt.strftime('%Y-%m-%d')
-# target_spreadsheet_id = 'Leasing Database'  # 目标表格的ID
-# target_sheet_name = 'Sheet1'  # 目标表格的工作表名称
-# target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
+old = read_file('Leasing Database','Sheet1')
+old = old.astype(Leasing.dtypes.to_dict())
+combined_data = pd.concat([old, Leasing], ignore_index=True)
+Temp = pd.concat([old, combined_data])
+final_data = Temp[Temp.duplicated(subset = ['Tenant','Property','Renewal'],keep=False) == False]
 
-# existing_data = target_sheet.get_all_values()
+target_spreadsheet_id = 'Leasing Database'  # 目标表格的ID
+target_sheet_name = 'Sheet1'  # 目标表格的工作表名称
+target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
 
-# existing_data_set = set(tuple(row) for row in existing_data[1:])
-
-# new_data = [tuple(row) for row in Leasing.values if tuple(row) not in existing_data_set]
-# if new_data:
-#     last_row = len(existing_data) + 1
-#     target_sheet.insert_rows(new_data, last_row)
+set_with_dataframe(target_sheet, final_data, row=(len(old) + 2),include_column_header=False)
 
 # while True:
 #     st.write(f"Last Update: {time.strftime('%Y-%m-%d')}")
