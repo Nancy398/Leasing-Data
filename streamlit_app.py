@@ -62,7 +62,7 @@ Leasing_US.loc[Leasing_US['Renewal'] == "No", 'Renewal'] = 'New'
 Leasing_US.loc[Leasing_US['Term Catorgy'] == "short", 'Term Catorgy'] = 'Short'
 Leasing_US['Number of beds'] = pd.to_numeric(Leasing_US['Number of beds'], errors='coerce')
 # Leasing_US['Number of beds'] = Leasing_US['Number of beds'].astype(int)
-Leasing_US['Signed Date'] = pd.to_datetime(Leasing_US['Signed Date'],format = '%m/%d/%Y')
+Leasing_US['Signed Date'] = pd.to_datetime(Leasing_US['Signed Date'])
 Leasing_US['Region'] = 'US'
 
 Leasing_China = read_file("China Sales","Dec")
@@ -83,7 +83,8 @@ Leasing_China.loc[Leasing_China['Renewal'] == "续租", 'Renewal'] = 'Renew'
 Leasing_China.loc[Leasing_China['Renewal'] == "短租", 'Renewal'] = 'New'
 Leasing_China.loc[Leasing_China['Renewal'] == "接转租", 'Renewal'] = 'Transfer'
 Leasing_China.loc[Leasing_China['Renewal'] == "Leo", 'Renewal'] = 'Leo'
-Leasing_China['Signed Date'] = pd.to_datetime(Leasing_China['Signed Date'],format = '%m/%d/%Y')
+Leasing_China['Signed Date'] = pd.to_datetime(Leasing_China['Signed Date'])
+Leasing_China['Signed Date'] = Leasing_China['Signed Date'].dt.date
 Leasing_China = Leasing_China.drop(['Lease term and length','Term start','Term Ends'],axis=1)
 Leasing = pd.concat([Leasing_US,Leasing_China], join='inner',ignore_index=True)
 
