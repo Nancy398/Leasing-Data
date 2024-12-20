@@ -3,6 +3,7 @@ from google.oauth2.service_account import Credentials
 import pandas as pd
 import gspread
 import os
+from gspread_dataframe import set_with_dataframe
 
 st.markdown(
     """
