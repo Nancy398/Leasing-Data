@@ -135,6 +135,7 @@ import time
 # df = load_data()
 
 Leasing_all = read_file('Leasing Database','Sheet1')
+Leasing_all['Number of beds'] = pd.to_numeric(Leasing_all['Number of beds'], errors='coerce')
 Leasing_all['Signed Date'] = pd.to_datetime(Leasing_all['Signed Date'],format = 'mixed')
 
 # # Show a multiselect widget with the genres using `st.multiselect`.
