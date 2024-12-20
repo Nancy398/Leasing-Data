@@ -1,9 +1,13 @@
+pip install gspread_dataframe
+
 import streamlit as st
 from google.oauth2.service_account import Credentials
 import pandas as pd
 import gspread
 import os
 from gspread_dataframe import set_with_dataframe
+
+
 
 os.environ['TZ'] = 'America/Los Angeles'
 
