@@ -188,7 +188,7 @@ target_spreadsheet_id = 'Leasing Database'  # 目标表格的ID
 target_sheet_name = 'Sheet1'  # 目标表格的工作表名称
 target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
 
-set_with_dataframe(target_sheet, final_data, row=(len(old) + 2),include_column_header=False)
+# set_with_dataframe(target_sheet, final_data, row=(len(old) + 2),include_column_header=False)
 
 while True:
     st.write(f"Last Update: {time.strftime('%Y-%m-%d')}")
