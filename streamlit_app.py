@@ -85,7 +85,6 @@ Leasing = pd.concat([Leasing_US,Leasing_China], join='inner',ignore_index=True)
 
 def generate_pivot_table(df,index,columns):
   Table = df.pivot_table(index=index, columns=columns, values='Number of beds',aggfunc='sum',fill_value=0,margins=True)
-  Table = Table.astype(int)
   return Table
 
 from datetime import datetime
