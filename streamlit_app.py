@@ -5,6 +5,8 @@ import gspread
 import os
 from gspread_dataframe import set_with_dataframe
 
+os.environ['TZ'] = 'America/Los Angeles'
+
 st.markdown(
     """
     <style>
@@ -188,7 +190,7 @@ target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
 
 set_with_dataframe(target_sheet, final_data, row=(len(old) + 2),include_column_header=False)
 
-# while True:
-#     st.write(f"Last Update: {time.strftime('%Y-%m-%d')}")
-#     time.sleep(86400)  # 每秒更新一次
-#     st.rerun()
+while True:
+    st.write(f"Last Update: {time.strftime('%Y-%m-%d')}")
+    time.sleep(86400)  # 每秒更新一次
+    st.rerun()
