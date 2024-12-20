@@ -5,7 +5,6 @@ from google.oauth2.service_account import Credentials
 import pandas as pd
 import gspread
 import os
-from gspread_dataframe import set_with_dataframe
 
 
 
@@ -182,17 +181,18 @@ styled_pivot_table = df_reshaped.style.set_table_styles(
     [{'selector': 'thead th', 'props': [('text-align', 'center')]}]
 )
 
-# old = read_file('Leasing Database','Sheet1')
-# old = old.astype(Leasing.dtypes.to_dict())
-# combined_data = pd.concat([old, Leasing], ignore_index=True)
-# Temp = pd.concat([old, combined_data])
-# final_data = Temp[Temp.duplicated(subset = ['Tenant','Property','Renewal'],keep=False) == False]
+old = read_file('Leasing Database','Sheet1')
+old = old.astype(Leasing.dtypes.to_dict())
+combined_data = pd.concat([old, Leasing], ignore_index=True)
+Temp = pd.concat([old, combined_data])
+final_data = Temp[Temp.duplicated(subset = ['Tenant','Property','Renewal'],keep=False) == False]
 
-# target_spreadsheet_id = 'Leasing Database'  # 目标表格的ID
-# target_sheet_name = 'Sheet1'  # 目标表格的工作表名称
-# target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
+target_spreadsheet_id = 'Leasing Database'  # 目标表格的ID
+target_sheet_name = 'Sheet1'  # 目标表格的工作表名称
+target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
 
-# # set_with_dataframe(target_sheet, final_data, row=(len(old) + 2),include_column_header=False)
+data_list = Leasing.values.tolist()
+target_sheet.append_rows(data_list)
 
 # while True:
 #     st.write(f"Last Update: {time.strftime('%Y-%m-%d')}")
