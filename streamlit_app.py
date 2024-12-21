@@ -148,7 +148,7 @@ Domestic =  st.multiselect(
 from datetime import datetime
 
 # 设置起始日期和结束日期
-start_date = datetime(2024, 11, 1)  # 2024年11月1日
+start_date = datetime(2024, 10, 25)  # 2024年11月1日
 end_date = datetime(2024, 12, 31)  # 2024年12月31日
 
 # 创建日期区间选择器
