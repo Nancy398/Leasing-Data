@@ -6,50 +6,46 @@ import os
 from gspread_dataframe import set_with_dataframe
 
 
-os.environ['TZ'] = 'America/Los Angeles'
+import streamlit as st
+from google.oauth2.service_account import Credentials
+import pandas as pd
+import gspread
+import os
+from gspread_dataframe import set_with_dataframe
+from datetime import datetime
+from datetime import datetime, timedelta
+import time
 
-st.markdown(
-    """
-    <style>
-        /* 更改 multiselect 组件的字体 */
-        div.stMultiSelect > div > div {
-            font-family: 'Times New Roman', sans-serif;  /* 字体类型 */
-            font-size: 16px;  /* 字体大小 */
-        }
-        
-        /* 更改 multiselect 中选中项的字体 */
-        div.stMultiSelect > div > div > div > div {
-            font-family: 'Times New Roman', monospace;
-            font-size: 18px;
-            font-weight: bold;
-        }
+st.title('Leasing Data')
 
-        /* 更改 multiselect 按钮的字体 */
-        div.stMultiSelect > div > div > div > button {
-            font-family: 'Times New Roman', sans-serif;
-            font-size: 14px;
-            font-weight: normal;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-credentials = Credentials.from_service_account_info(
-    st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
-    scopes=scope
-)
-gc = gspread.authorize(credentials)
-
+@st.cache_data(ttl=300)
 def read_file(name,sheet):
+  scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+  credentials = Credentials.from_service_account_info(
+  st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
+  scopes=scope)
+  gc = gspread.authorize(credentials)
   worksheet = gc.open(name).worksheet(sheet)
   rows = worksheet.get_all_values()
   df = pd.DataFrame.from_records(rows)
   df = pd.DataFrame(df.values[1:], columns=df.iloc[0])
   return df
+  
+@st.cache_data(ttl=300)
+def open_file(url):
+  scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+  credentials = Credentials.from_service_account_info(
+  st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
+  scopes=scope)
+  gc = AuthorizedSession(credentials)
+  worksheet = gc.get(url)
+  return worksheet
+  
 
-st.title('Leasing Data')
+def generate_pivot_table(df,index,columns):
+  Table = df.pivot_table(index=index, columns=columns, values='Number of beds',aggfunc='sum',fill_value=0,margins=True)
+  Table = Table.astype(int)
+  return Table
 
 Leasing_US = read_file("MOO HOUSING PRICING SHEET","December Leasing Tracker")
 Leasing_US['Tenant Name'] = Leasing_US['Tenant Name'].replace('', pd.NA)
@@ -59,6 +55,7 @@ Leasing_US.columns=['Tenant','Property','Renewal','Agent','Lease Term','Term Cat
 Leasing_US.loc[Leasing_US['Renewal'] == "YES", 'Renewal'] = 'Renew'
 Leasing_US.loc[Leasing_US['Renewal'] == "NO", 'Renewal'] = 'New'
 Leasing_US.loc[Leasing_US['Renewal'] == "No", 'Renewal'] = 'New'
+Leasing_US.loc[Leasing_US['Renewal'] == "Lease Transfer", 'Renewal'] = 'Transfer'
 Leasing_US.loc[Leasing_US['Term Catorgy'] == "short", 'Term Catorgy'] = 'Short'
 Leasing_US['Number of beds'] = pd.to_numeric(Leasing_US['Number of beds'], errors='coerce')
 # Leasing_US['Number of beds'] = Leasing_US['Number of beds'].astype(int)
@@ -88,26 +85,6 @@ Leasing_China['Signed Date'] = pd.to_datetime(Leasing_China['Signed Date'])
 Leasing_China['Signed Date'] = Leasing_China['Signed Date'].dt.date
 Leasing_China = Leasing_China.drop(['Lease term and length','Term start','Term Ends'],axis=1)
 Leasing = pd.concat([Leasing_US,Leasing_China], join='inner',ignore_index=True)
-
-def generate_pivot_table(df,index,columns):
-  Table = df.pivot_table(index=index, columns=columns, values='Number of beds',aggfunc='sum',fill_value=0,margins=True)
-  Table = Table.astype(int)
-  return Table
-
-from datetime import datetime
-from datetime import datetime, timedelta
-import time
-# today = datetime.now()
-# last_week = today - timedelta(weeks=1)
-# today_date = today.strftime('%Y-%m-%d')
-# last_week_date = last_week.strftime('%Y-%m-%d')
-# Leasing_Weekly = Leasing.loc[Leasing['Signed Date'].between(last_week_date,today_date) ]
-
-# Table = generate_pivot_table(Leasing_Weekly)
-# Table_All = generate_pivot_table(Leasing)
-# Table = Table.replace(0,"")
-# Table_All = Table_All.replace(0,"")
-
 
 Leasing_all = read_file('Leasing Database','Sheet1')
 Leasing_all['Number of beds'] = pd.to_numeric(Leasing_all['Number of beds'], errors='coerce')
@@ -144,8 +121,6 @@ Domestic =  st.multiselect(
       default=["USC", "UCLA",'UCI','Leo']
 )
 
-# # Show a slider widget with the years using `st.slider`.
-from datetime import datetime
 
 # 设置起始日期和结束日期
 start_date = datetime(2024, 10, 25)  # 2024年11月1日
@@ -181,19 +156,22 @@ styled_pivot_table = df_reshaped.style.set_table_styles(
     [{'selector': 'thead th', 'props': [('text-align', 'center')]}]
 )
 
-old = read_file('Leasing Database','Sheet1')
-old = old.astype(Leasing.dtypes.to_dict())
-combined_data = pd.concat([old, Leasing], ignore_index=True)
-Temp = pd.concat([old, combined_data])
-final_data = Temp[Temp.duplicated(subset = ['Tenant','Property','Renewal'],keep=False) == False]
-
-target_spreadsheet_id = 'Leasing Database'  # 目标表格的ID
-target_sheet_name = 'Sheet1'  # 目标表格的工作表名称
-target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
-
-set_with_dataframe(target_sheet, final_data, row=(len(old) + 2),include_column_header=False)
-
-while True:
-    st.write(f"Last Update: {time.strftime('%Y-%m-%d')}")
-    time.sleep(86400)  # 每秒更新一次
-    st.rerun()
+@st.cache_data(ttl=300)
+def save_data():
+  old = read_file('Leasing Database','Sheet1')
+  old = old.astype(Leasing.dtypes.to_dict())
+  combined_data = pd.concat([old, Leasing], ignore_index=True)
+  Temp = pd.concat([old, combined_data])
+  final_data = Temp[Temp.duplicated(subset = ['Tenant','Property','Renewal'],keep=False) == False]
+  scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+  credentials = Credentials.from_service_account_info(
+  st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
+  scopes=scope)
+  gc = gspread.authorize(credentials)
+  target_spreadsheet_id = 'Leasing Database'  # 目标表格的ID
+  target_sheet_name = 'Sheet1'  # 目标表格的工作表名称
+  target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
+  
+  return set_with_dataframe(target_sheet, final_data, row=(len(old) + 2),include_column_header=False)
+  
+save_data()
