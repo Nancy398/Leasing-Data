@@ -124,7 +124,7 @@ Domestic =  st.multiselect(
 
 # 设置起始日期和结束日期
 start_date = datetime(2024, 10, 25)  # 2024年11月1日
-end_date = datetime(2025, 01, 31)  # 2024年12月31日
+end_date = datetime(2025, 1, 31)  # 2024年12月31日
 
 # 创建日期区间选择器
 selected_dates = st.slider(
