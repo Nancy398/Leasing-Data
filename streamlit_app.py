@@ -48,7 +48,7 @@ def generate_pivot_table(df,index,columns):
   return Table
 
 Leasing_US = read_file("MOO HOUSING PRICING SHEET","December Leasing Tracker")
-Leasing_US['Tenant Name'] = Leasing_US['Tenant Name'].replace('', pd.NA)
+# Leasing_US['Tenant Name'] = Leasing_US['Tenant Name'].replace('', pd.NA)
 # Leasing_US = Leasing_US.drop(columns=[''])
 Leasing_US = Leasing_US.dropna()
 Leasing_US.columns=['Tenant','Property','Renewal','Agent','Lease Term','Term Catorgy','Number of beds','Deposit','Term','Signed Date','Special Note','Domestic']
