@@ -112,7 +112,7 @@ Category =  st.multiselect(
 Renewal =  st.multiselect(
     "选择合同种类",
     ["New", "Renew",'Transfer','Leo'],
-      default=["New", "Renew",'Transfer']
+      default=["New", "Renew",'Transfer','Leo']
 )
 
 Domestic =  st.multiselect(
