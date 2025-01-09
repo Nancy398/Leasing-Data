@@ -135,23 +135,28 @@ end_date = datetime(2025, 1, 31)  # 2024年12月31日
 #     format="YYYY-MM-DD"  # 格式化显示日期
 # )
 # 
-start_selected = st.date_input(
-    "选择开始日期:",
-    value=start_date,
-    min_value=start_date,
-    max_value=end_date
-)
+col1, col2 = st.columns(2)
 
-end_selected = st.date_input(
-    "选择结束日期:",
-    value=end_date,
-    min_value=start_date,
-    max_value=end_date
-)
+# 在第一个列中添加开始日期选择器
+with col1:
+    start_selected = st.date_input(
+        "选择开始日期:",
+        value=start_date,
+        min_value=start_date,
+        max_value=end_date
+    )
 
+# 在第二个列中添加结束日期选择器
+with col2:
+    end_selected = st.date_input(
+        "选择结束日期:",
+        value=end_date,
+        min_value=start_date,
+        max_value=end_date
+    )
+
+# 显示用户选择的日期范围
 st.write(f"您选择的日期范围是：{start_selected} 至 {end_selected}")
-
-st.write(f"您选择的日期是：{selected_date}")
 
 # 显示选择的日期区间
 st.write(f"你选择的日期区间是: 从 {selected_dates[0].strftime('%Y-%m-%d')} 到 {selected_dates[1].strftime('%Y-%m-%d')}")
