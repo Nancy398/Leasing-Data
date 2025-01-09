@@ -160,7 +160,8 @@ st.write(f"您选择的日期范围是：{start_selected} 至 {end_selected}")
 
 # # 显示选择的日期区间
 # st.write(f"你选择的日期区间是: 从 {start_selected}.strftime('%Y-%m-%d')} 到 {end_selected.strftime('%Y-%m-%d')}")
-
+start_selected = pd.Timestamp(start_selected)
+end_selected = pd.Timestamp(end_selected)
 # Filter the dataframe based on the widget input and reshape it.
 df_filtered = Leasing_all[(Leasing_all["Region"].isin(Region)) & (Leasing_all["Signed Date"].between(start_selected,end_selected) & (Leasing_all["Term Catorgy"].isin(Term)) &(Leasing_all["Term"].isin(Category)) & (Leasing_all["Renewal"].isin(Renewal)))]
 st.sidebar.header("选择透视表展示")
