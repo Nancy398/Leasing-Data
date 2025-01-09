@@ -127,13 +127,31 @@ start_date = datetime(2024, 10, 25)  # 2024年11月1日
 end_date = datetime(2025, 1, 31)  # 2024年12月31日
 
 # 创建日期区间选择器
-selected_dates = st.slider(
-    "选择日期区间:",
+# selected_dates = st.slider(
+#     "选择日期区间:",
+#     min_value=start_date,
+#     max_value=end_date,
+#     value=(start_date, end_date),  # 默认选定区间为12月1日至12月31日
+#     format="YYYY-MM-DD"  # 格式化显示日期
+# )
+# 
+start_selected = st.date_input(
+    "选择开始日期:",
+    value=start_date,
     min_value=start_date,
-    max_value=end_date,
-    value=(start_date, end_date),  # 默认选定区间为12月1日至12月31日
-    format="YYYY-MM-DD"  # 格式化显示日期
+    max_value=end_date
 )
+
+end_selected = st.date_input(
+    "选择结束日期:",
+    value=end_date,
+    min_value=start_date,
+    max_value=end_date
+)
+
+st.write(f"您选择的日期范围是：{start_selected} 至 {end_selected}")
+
+st.write(f"您选择的日期是：{selected_date}")
 
 # 显示选择的日期区间
 st.write(f"你选择的日期区间是: 从 {selected_dates[0].strftime('%Y-%m-%d')} 到 {selected_dates[1].strftime('%Y-%m-%d')}")
