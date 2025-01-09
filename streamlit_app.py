@@ -140,7 +140,7 @@ col1, col2 = st.columns(2)
 # 在第一个列中添加开始日期选择器
 with col1:
     start_selected = st.date_input(
-        "选择开始日期:",
+        "From:",
         value=start_date,
         min_value=start_date,
         max_value=end_date
@@ -149,7 +149,7 @@ with col1:
 # 在第二个列中添加结束日期选择器
 with col2:
     end_selected = st.date_input(
-        "选择结束日期:",
+        "To:",
         value=end_date,
         min_value=start_date,
         max_value=end_date
@@ -158,11 +158,11 @@ with col2:
 # 显示用户选择的日期范围
 st.write(f"您选择的日期范围是：{start_selected} 至 {end_selected}")
 
-# 显示选择的日期区间
-st.write(f"你选择的日期区间是: 从 {selected_dates[0].strftime('%Y-%m-%d')} 到 {selected_dates[1].strftime('%Y-%m-%d')}")
+# # 显示选择的日期区间
+# st.write(f"你选择的日期区间是: 从 {start_selected}.strftime('%Y-%m-%d')} 到 {end_selected.strftime('%Y-%m-%d')}")
 
 # Filter the dataframe based on the widget input and reshape it.
-df_filtered = Leasing_all[(Leasing_all["Region"].isin(Region)) & (Leasing_all["Signed Date"].between(selected_dates[0],selected_dates[1]) & (Leasing_all["Term Catorgy"].isin(Term)) &(Leasing_all["Term"].isin(Category)) & (Leasing_all["Renewal"].isin(Renewal)))]
+df_filtered = Leasing_all[(Leasing_all["Region"].isin(Region)) & (Leasing_all["Signed Date"].between(start_selected,end_selected) & (Leasing_all["Term Catorgy"].isin(Term)) &(Leasing_all["Term"].isin(Category)) & (Leasing_all["Renewal"].isin(Renewal)))]
 st.sidebar.header("选择透视表展示")
 row_options = st.sidebar.multiselect('请选择展示行', options=['Region','Agent'], default=['Region'])
 column_options = st.sidebar.multiselect('请选择展示列', options=['Domestic','Term','Renewal','Term Catorgy'], default=['Domestic','Term','Renewal'])
