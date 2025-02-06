@@ -47,7 +47,7 @@ def generate_pivot_table(df,index,columns):
   Table = Table.astype(int)
   return Table
 
-Leasing_US = read_file("MOO HOUSING PRICING SHEET","January 2025 Leasing Tracker ")
+Leasing_US = read_file("MOO HOUSING PRICING SHEET","February 2025 Leasing Tracker ")
 # Leasing_US['Tenant Name'] = Leasing_US['Tenant Name'].replace('', pd.NA)
 # Leasing_US = Leasing_US.drop(columns=[''])
 Leasing_US = Leasing_US.dropna()
@@ -63,7 +63,7 @@ Leasing_US['Signed Date'] = pd.to_datetime(Leasing_US['Signed Date'],format='mix
 Leasing_US['Signed Date'] = Leasing_US['Signed Date'].dt.date
 Leasing_US['Region'] = 'US'
 
-Leasing_China = read_file("China Sales","Jan")
+Leasing_China = read_file("China Sales","Feb")
 Leasing_China['Term length'] = Leasing_China['Term length'].replace(to_replace='1年', value='12个月', regex=True)
 Leasing_China['Term length'] = Leasing_China['Term length'].str.replace('[^\d]', '', regex=True)
 Leasing_China['Term length'] = Leasing_China['Term length'].astype(int)
@@ -124,7 +124,7 @@ Domestic =  st.multiselect(
 
 # 设置起始日期和结束日期
 start_date = datetime(2024, 10, 25)  # 2024年11月1日
-end_date = datetime(2025, 1, 31)  # 2024年12月31日
+end_date = datetime(2025, 2, 28) 
 
 # 创建日期区间选择器
 # selected_dates = st.slider(
