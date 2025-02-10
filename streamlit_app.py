@@ -51,7 +51,7 @@ Leasing_US = read_file("MOO HOUSING PRICING SHEET","February 2025 Leasing Tracke
 # Leasing_US['Tenant Name'] = Leasing_US['Tenant Name'].replace('', pd.NA)
 # Leasing_US = Leasing_US.drop(columns=[''])
 Leasing_US = Leasing_US.dropna()
-Leasing_US.columns=['Tenant','Property','Renewal','Agent','Lease Term','Term Catorgy','Number of beds','Deposit','Term','Signed Date','Special Note','Domestic']
+Leasing_US.columns=['Tenant','Property','Renewal','Agent','Lease Term','Term Catorgy','Number of beds','Deposit','Term','Signed Date','Special Note','Domestic','Column 1']
 Leasing_US.loc[Leasing_US['Renewal'] == "YES", 'Renewal'] = 'Renew'
 Leasing_US.loc[Leasing_US['Renewal'] == "NO", 'Renewal'] = 'New'
 Leasing_US.loc[Leasing_US['Renewal'] == "No", 'Renewal'] = 'New'
