@@ -163,7 +163,7 @@ st.write(f"您选择的日期范围是：{start_selected} 至 {end_selected}")
 start_selected = pd.Timestamp(start_selected)
 end_selected = pd.Timestamp(end_selected)
 # Filter the dataframe based on the widget input and reshape it.
-df_filtered = Leasing_all[(Leasing_all["Region"].isin(Region)) & (Leasing_all["Signed Date"].between(start_selected,end_selected) & (Leasing_all["Term Catorgy"].isin(Term)) &(Leasing_all["Term"].isin(Category)) & (Leasing_all["Renewal"].isin(Renewal)))]
+df_filtered = Leasing_all[(Leasing_all["Region"].isin(Region)) & (Leasing_all["Signed Date"].between(start_selected,end_selected) & (Leasing_all["Term Catorgy"].isin(Term)) &(Leasing_all["Term"].isin(Category)) & (Leasing_all["Renewal"].isin(Renewal)) & (Leasing_all["Domestic"].isin(Domestic)))]
 st.sidebar.header("选择透视表展示")
 row_options = st.sidebar.multiselect('请选择展示行', options=['Region','Agent'], default=['Region'])
 column_options = st.sidebar.multiselect('请选择展示列', options=['Domestic','Term','Renewal','Term Catorgy'], default=['Domestic','Term','Renewal'])
