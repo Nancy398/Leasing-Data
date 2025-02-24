@@ -123,7 +123,7 @@ Domestic =  st.multiselect(
 
 
 # 设置起始日期和结束日期
-start_date = datetime(2024, 09, 01)  # 2024年11月1日
+start_date = datetime(2024, 9, 1)  # 2024年11月1日
 end_date = datetime(2025, 2, 28) 
 
 # 创建日期区间选择器
