@@ -80,6 +80,7 @@ Leasing_China.loc[Leasing_China['Renewal'] == "新合同", 'Renewal'] = 'New'
 Leasing_China.loc[Leasing_China['Renewal'] == "续租", 'Renewal'] = 'Renew'
 Leasing_China.loc[Leasing_China['Renewal'] == "短租", 'Renewal'] = 'New'
 Leasing_China.loc[Leasing_China['Renewal'] == "接转租", 'Renewal'] = 'Transfer'
+Leasing_China.loc[Leasing_China['Renewal'] == "换房续租", 'Renewal'] = 'Transfer'
 Leasing_China.loc[Leasing_China['Renewal'] == "Leo", 'Renewal'] = 'Leo'
 Leasing_China['Signed Date'] = pd.to_datetime(Leasing_China['Signed Date'])
 Leasing_China['Signed Date'] = Leasing_China['Signed Date'].dt.date
