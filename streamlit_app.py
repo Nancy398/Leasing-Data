@@ -57,7 +57,7 @@ Leasing_US.loc[Leasing_US['Renewal'] == "NO", 'Renewal'] = 'New'
 Leasing_US.loc[Leasing_US['Renewal'] == "No", 'Renewal'] = 'New'
 Leasing_US.loc[Leasing_US['Renewal'] == "Lease Transfer", 'Renewal'] = 'Transfer'
 Leasing_US.loc[Leasing_US['Term Catorgy'] == "short", 'Term Catorgy'] = 'Short'
-Leasing_US['Number of beds'] = pd.to_numeric(Leasing_US['Number of beds'], errors='coerce')
+# Leasing_US['Number of beds'] = pd.to_numeric(Leasing_US['Number of beds'], errors='coerce')
 Leasing_US['Number of beds'] = Leasing_US['Number of beds'].astype(int)
 Leasing_US['Signed Date'] = pd.to_datetime(Leasing_US['Signed Date'],format='mixed')
 Leasing_US['Signed Date'] = Leasing_US['Signed Date'].dt.date
