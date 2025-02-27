@@ -107,19 +107,19 @@ Term = st.multiselect(
 Category =  st.multiselect(
     "选择春/秋季",
     ["Spring", "Fall"],
-      default=["Spring", "Fall"]
+      default=["Fall"]
 )
 
 Renewal =  st.multiselect(
     "选择合同种类",
     ["New", "Renew",'Transfer','Leo'],
-      default=["New", "Renew",'Transfer','Leo']
+      default=["New", "Renew"]
 )
 
 Domestic =  st.multiselect(
     "选择房屋地区",
     ["USC", "UCLA",'UCI','Leo'],
-      default=["USC", "UCLA",'UCI','Leo']
+      default=["USC"]
 )
 
 
