@@ -175,11 +175,6 @@ row_options = st.sidebar.multiselect('请选择展示行', options=['Region','Ag
 column_options = st.sidebar.multiselect('请选择展示列', options=['Domestic','Term','Renewal','Term Catorgy'], default=['Domestic','Term','Renewal'])
 df_reshaped = generate_pivot_table(df_filtered,row_options,column_options)
 
-st.dataframe(
-    df_filtered,
-    use_container_width=True,
-    # column_config={"selected_dates": st.column_config.TextColumn("Time")},
-)
 # Show sum of 'Number of beds' in filtered data
 sum_beds = df_filtered['Number of beds'].sum()
 st.write(f"The total sum of 'Number of beds' is: {sum_beds}")
