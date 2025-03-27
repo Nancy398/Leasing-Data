@@ -180,6 +180,10 @@ st.dataframe(
     use_container_width=True,
     # column_config={"selected_dates": st.column_config.TextColumn("Time")},
 )
+# Show sum of 'Number of beds' in filtered data
+sum_beds = df_filtered['Number of beds'].sum()
+st.write(f"The total sum of 'Number of beds' is: {sum_beds}")
+
 # # Display the data as a table using `st.dataframe`.
 st.write('Leasing Data')
 st.dataframe(
