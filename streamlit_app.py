@@ -175,6 +175,11 @@ column_options = st.sidebar.multiselect('请选择展示列', options=['Domestic
 df_reshaped = df_filtered.pivot_table(index=row_options, columns=column_options, values='Number of beds',aggfunc='sum',fill_value=0,margins=True)
 df_reshaped = df_reshaped.astype(int)
 
+st.dataframe(
+    df_filtered,
+    use_container_width=True,
+    # column_config={"selected_dates": st.column_config.TextColumn("Time")},
+)
 # # Display the data as a table using `st.dataframe`.
 st.write('Leasing Data')
 st.dataframe(
