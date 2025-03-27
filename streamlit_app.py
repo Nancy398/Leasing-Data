@@ -44,7 +44,7 @@ def open_file(url):
 
 def generate_pivot_table(df,index,columns):
   Table = df.pivot_table(index=index, columns=columns, values='Number of beds',aggfunc='sum',fill_value=0,margins=True)
-  # Table = Table.astype(int)
+  Table = Table.astype(int)
   return Table
 
 Leasing_US = read_file("MOO HOUSING PRICING SHEET","March 2025 Leasing Tracker")
@@ -90,7 +90,7 @@ Leasing_China = Leasing_China.drop(['Lease term and length','Term start','Term E
 Leasing = pd.concat([Leasing_US,Leasing_China], join='inner',ignore_index=True)
 
 Leasing_all = read_file('Leasing Database','Sheet1')
-# Leasing_all['Number of beds'] = pd.to_numeric(Leasing_all['Number of beds'], errors='coerce')
+Leasing_all['Number of beds'] = pd.to_numeric(Leasing_all['Number of beds'], errors='coerce')
 # Leasing_all['Number of beds'].fillna(0, inplace=True)
 Leasing_all['Signed Date'] = pd.to_datetime(Leasing_all['Signed Date'],format = 'mixed')
 
