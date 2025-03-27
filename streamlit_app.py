@@ -172,9 +172,7 @@ df_filtered['Number of beds'] = pd.to_numeric(df_filtered['Number of beds'], err
 st.sidebar.header("选择透视表展示")
 row_options = st.sidebar.multiselect('请选择展示行', options=['Region','Agent'], default=['Region'])
 column_options = st.sidebar.multiselect('请选择展示列', options=['Domestic','Term','Renewal','Term Catorgy'], default=['Domestic','Term','Renewal'])
-# df_reshaped = generate_pivot_table(df_filtered,row_options,column_options)
-df_reshaped = df_filtered.pivot_table(index=row_options, columns=column_options, values='Number of beds',aggfunc='sum',fill_value=0,margins=True)
-df_reshaped = df_reshaped.astype(int)
+df_reshaped = generate_pivot_table(df_filtered,row_options,column_options)
 
 # # Display the data as a table using `st.dataframe`.
 st.write('Leasing Data')
