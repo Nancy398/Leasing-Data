@@ -175,6 +175,11 @@ row_options = st.sidebar.multiselect('请选择展示行', options=['Region','Ag
 column_options = st.sidebar.multiselect('请选择展示列', options=['Domestic','Term','Renewal','Term Catorgy'], default=['Domestic','Term','Renewal'])
 df_reshaped = generate_pivot_table(df_filtered,row_options,column_options)
 
+st.dataframe(
+    df_filtered,
+    use_container_width=True,
+    # column_config={"selected_dates": st.column_config.TextColumn("Time")},
+)
 # # Display the data as a table using `st.dataframe`.
 st.write('Leasing Data')
 st.dataframe(
