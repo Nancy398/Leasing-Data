@@ -44,7 +44,7 @@ def open_file(url):
 
 def generate_pivot_table(df,index,columns):
   Table = df.pivot_table(index=index, columns=columns, values='Number of beds',aggfunc='sum',fill_value=0,margins=True)
-  Table = Table.astype(int)
+  # Table = Table.astype(int)
   return Table
 
 Leasing_US = read_file("MOO HOUSING PRICING SHEET","March 2025 Leasing Tracker")
