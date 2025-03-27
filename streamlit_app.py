@@ -64,9 +64,10 @@ Leasing_US['Signed Date'] = Leasing_US['Signed Date'].dt.date
 Leasing_US['Region'] = 'US'
 
 Leasing_China = read_file("China Sales","Mar")
-Leasing_China['Term length'] = Leasing_China['Term length'].fillna('0')
+Leasing_China['Term length'] = Leasing_China['Term length'].astype(str)  # 确保是字符串
 Leasing_China['Term length'] = Leasing_China['Term length'].replace(to_replace='1年', value='12个月', regex=True)
-Leasing_China['Term length'] = Leasing_China['Term length'].str.replace('[^\d]', '', regex=True)
+Leasing_China['Term length'] = Leasing_China['Term length'].str.replace(r'[^\d]', '', regex=True)  # 只保留数字
+Leasing_China['Term length'] = Leasing_China['Term length'].apply(lambda x: x if x.strip() else '0')  # 处理空字符串
 Leasing_China['Term length'] = Leasing_China['Term length'].astype(int)
 Leasing_China.loc[Leasing_China['Term length'] >=6 , 'Term Catorgy'] = 'Long'
 Leasing_China.loc[Leasing_China['Term length'] < 6 , 'Term Catorgy'] = 'Short'
