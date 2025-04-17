@@ -62,7 +62,7 @@ Leasing_US['Number of beds'] = pd.to_numeric(Leasing_US['Number of beds'], error
 # Leasing_US['Signed Date'] = pd.to_datetime(Leasing_US['Signed Date'],format='mixed')
 Leasing_US['signed date'] = pd.to_datetime(Leasing_US['Signed Date'].astype(str), errors='coerce')
 Leasing_US = Leasing_US[Leasing_US['signed date'].notna()]
-Leasing_US['Signed Date'] = Leasing_US['Signed Date'].dt.date
+# Leasing_US['Signed Date'] = Leasing_US['Signed Date'].dt.date
 Leasing_US['Region'] = 'US'
 
 Leasing_China = read_file("China Sales","Apr")
