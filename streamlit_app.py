@@ -212,3 +212,23 @@ def save_data():
   return set_with_dataframe(target_sheet, final_data, row=(len(old) + 2),include_column_header=False)
   
 save_data()
+
+
+def save_data1():
+  old = read_file('Leasing Database','Test')
+  old = old.astype(Leasing.dtypes.to_dict())
+  combined_data = pd.concat([old, Leasing], ignore_index=True)
+  Temp = pd.concat([old, combined_data])
+  final_data = Temp[Temp.duplicated(subset = ['Tenant','Property','Renewal'],keep=False) == False]
+  scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+  credentials = Credentials.from_service_account_info(
+  st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
+  scopes=scope)
+  gc = gspread.authorize(credentials)
+  target_spreadsheet_id = 'Leasing Database'  # 目标表格的ID
+  target_sheet_name = 'Sheet1'  # 目标表格的工作表名称
+  target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
+  
+  return set_with_dataframe(target_sheet, final_data, row=(len(old) + 2),include_column_header=False)
+  
+save_data1()
