@@ -226,7 +226,7 @@ def save_data1():
   scopes=scope)
   gc = gspread.authorize(credentials)
   target_spreadsheet_id = 'Leasing Database'  # 目标表格的ID
-  target_sheet_name = 'Sheet1'  # 目标表格的工作表名称
+  target_sheet_name = 'Test'  # 目标表格的工作表名称
   target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
   
   return set_with_dataframe(target_sheet, final_data, row=(len(old) + 2),include_column_header=False)
