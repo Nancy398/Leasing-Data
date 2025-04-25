@@ -215,11 +215,14 @@ save_data()
 
 
 def save_data1():
-  old = read_file('Leasing Database','Test')
+  doc = read_file('Leasing Database','Test')
+  old = doc.iloc[:, :10]
+  right = doc.iloc[:, 10:]
   # old = old.astype(Leasing.dtypes.to_dict())
   combined_data = pd.concat([old, Leasing], ignore_index=True)
   Temp = pd.concat([old, combined_data])
   final_data = Temp[Temp.duplicated(subset = ['Tenant','Property','Renewal'],keep=False) == False]
+  final_data = pd.concat([final_data,right])
   scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
   credentials = Credentials.from_service_account_info(
   st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
