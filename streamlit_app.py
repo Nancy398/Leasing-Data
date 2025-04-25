@@ -222,7 +222,7 @@ def save_data1():
   combined_data = pd.concat([old, Leasing], ignore_index=True)
   Temp = pd.concat([old, combined_data])
   final_data = Temp[Temp.duplicated(subset = ['Tenant','Property','Renewal'],keep=False) == False]
-  final_data = pd.concat([final_data,right],axis=1)
+  final_data = pd.concat([final_data,right],axis=1,ignore_index = True)
   scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
   credentials = Credentials.from_service_account_info(
   st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
