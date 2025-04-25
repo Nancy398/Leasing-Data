@@ -217,7 +217,7 @@ save_data()
 def save_data1():
   doc = read_file('Leasing Database','Test')
   old = doc.iloc[:, :10]
-  # old = old.astype(Leasing.dtypes.to_dict()
+  old = old.astype(Leasing.dtypes.to_dict()
   combined_data = pd.concat([old, Leasing], ignore_index=True)
   Temp = pd.concat([old, combined_data])
   final_data = Temp[Temp.duplicated(subset = ['Tenant','Property','Renewal'],keep=False) == False]
