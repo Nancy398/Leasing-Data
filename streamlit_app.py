@@ -216,6 +216,8 @@ save_data()
 
 def save_data1():
   doc = read_file('Leasing Database', 'Test')
+  Leasing['Number of beds'] = Leasing['Number of beds'].astype(int)
+  doc['Number of beds'] = doc['Number of beds'].astype(int)
   old = doc.iloc[:, :10]  # 取出原始的前10列
   right = doc.iloc[:, 10:]  # 后面的附加列（结构要保留）
 
