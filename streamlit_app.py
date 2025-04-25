@@ -215,20 +215,12 @@ save_data()
 
 
 def save_data1():
-  doc = read_file('Leasing Database', 'Test')
-  Leasing['Number of beds'] = Leasing['Number of beds'].astype(str)
-  doc['Number of beds'] = doc['Number of beds'].astype(str)
-  old = doc.iloc[:, :10]  # 取出原始的前10列
-  right = doc.iloc[:, 10:]  # 后面的附加列（结构要保留）
-
-# 找出 Leasing 中与 doc 的前10列不重复的行
-  new_rows = Leasing.merge(old, how='outer', indicator=True).query('_merge == "left_only"').drop(columns=['_merge'])
-
-# 为这些新行添加和 right 一样数量的空列
-  empty_right = pd.DataFrame([[pd.NA] * right.shape[1]] * len(new_rows), columns=right.columns)
-
-# 横向拼接新行和空列
-  new_full_rows = pd.concat([new_rows.reset_index(drop=True), empty_right.reset_index(drop=True)], axis=1)
+  doc = read_file('Leasing Database','Test')
+  old = doc.iloc[:, :10]
+  # old = old.astype(Leasing.dtypes.to_dict())
+  combined_data = pd.concat([old, Leasing], ignore_index=True)
+  Temp = pd.concat([old, combined_data])
+  final_data = Temp[Temp.duplicated(subset = ['Tenant','Property','Renewal'],keep=False) == False]
   scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
   credentials = Credentials.from_service_account_info(
   st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
@@ -238,6 +230,6 @@ def save_data1():
   target_sheet_name = 'Test'  # 目标表格的工作表名称
   target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
   
-  return set_with_dataframe(target_sheet, new_full_rows, row=(len(doc) + 2),include_column_header=False)
+  return target_sheet.append_rows(final_data.values.tolist())
   
 save_data1()
