@@ -235,19 +235,19 @@ save_data()
   
 # save_data1()
 
-doc = read_file('Leasing Database','Test')
-old = doc.iloc[:, :10]
-old = old.astype(Leasing.dtypes.to_dict()
-combined_data = pd.concat([old, Leasing], ignore_index=True)
-Temp = pd.concat([old, combined_data])
-final_data = Temp[Temp.duplicated(subset = ['Tenant','Property','Renewal'],keep=False) == False]
-st.dataframe(final_data)
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-credentials = Credentials.from_service_account_info(
-st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
-scopes=scope)
-gc = gspread.authorize(credentials)
-target_spreadsheet_id = 'Leasing Database'  # 目标表格的ID
-target_sheet_name = 'Test'  # 目标表格的工作表名称
-target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
-target_sheet.append_rows(final_data.values.tolist())
+# doc = read_file('Leasing Database','Test')
+# old = doc.iloc[:, :10]
+# old = old.astype(Leasing.dtypes.to_dict()
+# combined_data = pd.concat([old, Leasing], ignore_index=True)
+# Temp = pd.concat([old, combined_data])
+# final_data = Temp[Temp.duplicated(subset = ['Tenant','Property','Renewal'],keep=False) == False]
+# st.dataframe(final_data)
+# scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+# credentials = Credentials.from_service_account_info(
+# st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
+# scopes=scope)
+# gc = gspread.authorize(credentials)
+# target_spreadsheet_id = 'Leasing Database'  # 目标表格的ID
+# target_sheet_name = 'Test'  # 目标表格的工作表名称
+# target_sheet = gc.open(target_spreadsheet_id).worksheet(target_sheet_name)
+# target_sheet.append_rows(final_data.values.tolist())
