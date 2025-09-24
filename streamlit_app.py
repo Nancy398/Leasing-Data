@@ -66,10 +66,11 @@ with col1:
     fig.update_yaxes(autorange="reversed")
     st.plotly_chart(fig, use_container_width=True)
 
-    st.subheader("Room Selection")
-    selected_room = st.selectbox("Select a room to edit:", df['display'])
 
 with col2:
+    st.subheader("Room Selection")
+    selected_room = st.selectbox("Select a room to edit:", df['display'])
+    
     st.subheader("📝 Room Details")
     if selected_room:
         room = df[df['display']==selected_room].iloc[0]
