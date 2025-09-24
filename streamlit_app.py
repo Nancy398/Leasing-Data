@@ -62,7 +62,7 @@ df = pd.DataFrame(records)
 # ------------------- 左右布局 -------------------
 col1, col2 = st.columns([2,1])
 
-with col1:
+with tab1:
     st.title("Property Occupancy Information")
     
     all_property_names = sorted(df['Property Name'].unique())
@@ -145,7 +145,7 @@ with col1:
             st.plotly_chart(fig, use_container_width=True,key=f"{prop}_occupancy_chart_{i}")
 
 
-with col2:
+with tab2:
     st.subheader("Room Selection")
     selected_room = st.selectbox("Select a room to edit:", df['display'])
     
