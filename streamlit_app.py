@@ -89,5 +89,5 @@ with col2:
             gc = gspread.authorize(credentials)
             ws = gc.open('Vacancy').worksheet('Full Book')
             cell = ws.find(room['Property'])
-            ws.update(f"C{cell.row}:D{cell.row}", [[rent, notes]])
+            ws.update(f"N{cell.row}:K{cell.row}", [[rent, notes]])
             st.success(f"{room['Property']} - {room['Unit']} updated!")
