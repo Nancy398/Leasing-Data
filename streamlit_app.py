@@ -78,7 +78,7 @@ with col2:
         st.text(f"Room: {room['Room']}")
         st.text(f"Type: {room['Type']}")
         
-        rent = st.number_input("Rent", value=float(room.get('Rent',0)))
+        rent = st.number_input("Rent", value=float(room.get('Rent', 0) or 0))
         notes = st.text_area("Notes", value=room.get('Notes',''))
 
         if st.button("Save Changes"):
