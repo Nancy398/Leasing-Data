@@ -25,30 +25,39 @@ def read_file(name, sheet):
 
 data = read_file('Vacancy','Full Book')
 
-# ------------------- 数据处理 -------------------
 records = []
+
+# ------------------- 数据处理 -------------------
 for idx, row in data.iterrows():
-    if str(row.get('Notes','')).strip().lower() == 'airbnb':
-        continue
-    for lease_type in [('Lease From','Lease To'), ('Future Lease From','Future Lease To')]:
-        if pd.notnull(row[lease_type[0]]) and pd.notnull(row[lease_type[1]]):
-            records.append({
-                'Property Name': row['Property Name'],
-                'Property': row['Property'],
-                'Unit': row['Unit'],
-                'Room': row['Room'],
-                'Type': row['Type'],
-                'Status': row['Status'],
-                'Start': row[lease_type[0]],
-                'End': row[lease_type[1]],
-                'Rent': row.get('Rent',''),
-                'Notes': row.get('Notes','')
-            })
+    if str(row.get('Notes', '')).strip().lower() == 'airbnb':
+        continue  # 跳过 Notes 是 'airbnb' 的行
+
+    prop = row['Property']
+    prop_name = row['Property Name'] 
+    prop_type = row['Type']
+    prop_status = row['Status']
+    # 合并 current lease
+    if pd.notnull(row['Lease From']) and pd.notnull(row['Lease To']):
+        records.append({
+            'Property Name': prop_name,
+            'Property': prop,'Unit': row['Unit'], 'Room': row['Room'],
+            'Type': prop_type,
+            'Status': prop_status,
+            'Start': row['Lease From'],
+            'End': row['Lease To']
+        })
+    # 合并 future lease
+    if pd.notnull(row['Future Lease From']) and pd.notnull(row['Future Lease To']):
+        records.append({
+            'Property Name': prop_name,
+            'Property': prop,'Unit': row['Unit'], 'Room': row['Room'],
+            'Type': prop_type,
+            'Status': prop_status,
+            'Start': row['Future Lease From'],
+            'End': row['Future Lease To']
+        })
 
 df = pd.DataFrame(records)
-df['Start'] = pd.to_datetime(df['Start'])
-df['End'] = pd.to_datetime(df['End'])
-df['display'] = df['Property Name'] + ' - ' + df['Unit'] + ' - ' + df['Room']
 
 # ------------------- 左右布局 -------------------
 col1, col2 = st.columns([2,1])
