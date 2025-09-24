@@ -3,20 +3,19 @@ import pandas as pd
 import plotly.express as px
 from google.oauth2.service_account import Credentials
 import gspread
-from gspread_dataframe import set_with_dataframe
 import datetime
+from gspread_dataframe import set_with_dataframe
 
+# ------------------- 初始化 -------------------
 current_year = datetime.datetime.now().year
 next_year = current_year + 1
 
-# ------------------- 读取 Google Sheets -------------------
 @st.cache_data(ttl=300)
-def read_file(name, sheet):
+def read_file(name,sheet):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     credentials = Credentials.from_service_account_info(
         st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], 
-        scopes=scope
-    )
+        scopes=scope)
     gc = gspread.authorize(credentials)
     worksheet = gc.open(name).worksheet(sheet)
     rows = worksheet.get_all_values()
@@ -65,21 +64,45 @@ for idx, row in data.iterrows():
         })
 
 df = pd.DataFrame(records)
+df['Start'] = pd.to_datetime(df['Start'])
+df['End'] = pd.to_datetime(df['End'])
 
 # ------------------- 左右布局 -------------------
 col1, col2 = st.columns([2,1])
 
-# 左侧：Property + Unit + Room 列表
 with col1:
-    st.subheader("🏠 房间列表")
+    st.subheader("🏠 Vacancy Timeline & Room List")
+    
+    # 1️⃣ 按 Property Name 展示时间线
+    all_property_names = sorted(df['Property Name'].unique())
+    for i, property_name in enumerate(all_property_names):
+        df_property = df[df['Property Name']==property_name]
+        df_property['Status'] = df_property['Status'].fillna('').astype(str)
+        df_property['Status'] = df_property['Status'].apply(lambda x: x if x=='Out for Signing' else 'Other')
+        
+        fig = px.timeline(
+            df_property,
+            x_start='Start',
+            x_end='End',
+            y='Unit',  # 按 Unit 显示
+            color='Status',
+            color_discrete_map={'Out for Signing':'red','Other':'#7FB3D5'}
+        )
+        fig.update_yaxes(autorange="reversed")
+        fig.update_layout(
+            showlegend=False,
+            height=40*len(df_property["Unit"].unique()) + 100
+        )
+        st.plotly_chart(fig, use_container_width=True,key=f"{property_name}_timeline_{i}")
+    
+    # 2️⃣ 房间列表 + 点击选择
     df['display'] = df['Property Name'] + ' - ' + df['Unit'] + ' - ' + df['Room']
     for idx, row in df.iterrows():
         if st.button(row['display'], key=f"btn_{idx}"):
             st.session_state['selected_idx'] = idx
 
-# 右侧：side panel
 with col2:
-    st.subheader("📝 房间详情")
+    st.subheader("📝 Room Details")
     if 'selected_idx' in st.session_state:
         idx = st.session_state['selected_idx']
         room = df.loc[idx]
@@ -88,18 +111,15 @@ with col2:
         st.text(f"Room: {room['Room']}")
         st.text(f"Type: {room['Type']}")
         
-        # 可编辑字段
         rent = st.number_input("Rent", value=float(room.get('Rent',0)))
         notes = st.text_area("Notes", value=room.get('Notes',''))
         
-        if st.button("保存修改", key="save_btn"):
+        if st.button("Save", key="save_btn"):
             # 写回 Google Sheets
-            scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+            scope = ["https://spreadsheets.google.com/feeds","https://www.googleapis.com/auth/drive"]
             credentials = Credentials.from_service_account_info(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], scopes=scope)
             gc = gspread.authorize(credentials)
             ws = gc.open('Vacancy').worksheet('Full Book')
-            
-            # 找到行号（假设 Unit 列唯一）
             cell = ws.find(room['Unit'])
             ws.update(f"C{cell.row}:D{cell.row}", [[rent, notes]])
-            st.success(f"{room['Property']} - {room['Unit']} 更新成功！")
+            st.success(f"{room['Property']} - {room['Unit']} updated!")
