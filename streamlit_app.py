@@ -88,6 +88,6 @@ with col2:
             credentials = Credentials.from_service_account_info(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], scopes=scope)
             gc = gspread.authorize(credentials)
             ws = gc.open('Vacancy').worksheet('Full Book')
-            cell = ws.find(room['Unit'])
+            cell = ws.find(room['Property'])
             ws.update(f"C{cell.row}:D{cell.row}", [[rent, notes]])
             st.success(f"{room['Property']} - {room['Unit']} updated!")
