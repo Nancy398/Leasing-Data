@@ -173,22 +173,11 @@ with tab2:
         rent = st.number_input("Rent", value=float(room.get('Rent', 0) or 0))
         notes = st.text_area("Notes", value=room.get('Notes',''))
     
-        if st.button("Save Changes"):
-            # 写回 Google Sheets
-            scope = ["https://spreadsheets.google.com/feeds","https://www.googleapis.com/auth/drive"]
-            credentials = Credentials.from_service_account_info(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], scopes=scope)
-            gc = gspread.authorize(credentials)
-            ws = gc.open('Vacancy').worksheet('Full Book')
-    
-            # 唯一定位行（Property + Unit + Room）
-            cells = ws.findall(room['Unit'])
-            for c in cells:
-                row_values = ws.row_values(c.row)
-                if row_values[0] == room['Property'] and row_values[2] == room['Room']:  # 假设 Property=colA, Room=colC
-                    header = ws.row_values(1)
-                    rent_col = header.index("Rent")+1
-                    notes_col = header.index("Notes")+1
-                    ws.update_cell(c.row, rent_col, rent)
-                    ws.update_cell(c.row, notes_col, notes)
-                    st.success(f"{room['Property']} - {room['Unit']} updated!")
-                    break
+        if st.button("Save Changes"): # 写回 Google Sheets 
+            scope = ["https://spreadsheets.google.com/feeds","https://www.googleapis.com/auth/drive"] 
+            credentials = Credentials.from_service_account_info(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], scopes=scope) 
+            gc = gspread.authorize(credentials) 
+            ws = gc.open('Vacancy').worksheet('Full Book') 
+            cell = ws.find(room['Property']) 
+            ws.update(f"M{cell.row}:N{cell.row}", [[rent, notes]]) 
+            st.success(f"{room['Property']} - {room['Unit']} updated!")
