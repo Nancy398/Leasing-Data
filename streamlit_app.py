@@ -60,8 +60,8 @@ for idx, row in data.iterrows():
 df = pd.DataFrame(records)
 
 # ------------------- 左右布局 -------------------
-col1, col2 = st.columns([2,1])
 
+tab1, tab2,tab3 = st.tabs(["🏠 Vacant Units", “Edit Form”])
 with tab1:
     st.title("Property Occupancy Information")
     
