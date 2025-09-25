@@ -147,6 +147,10 @@ with tab1:
 
 with tab2:
     st.subheader("Room Selection")
+    df['display'] = df['Property Name'] + ' - ' + df['Unit'] + ' - ' + df['Room']
+    for idx, row in df.iterrows():
+        if st.button(row['display'], key=f"btn_{idx}"):
+            st.session_state['selected_idx'] = idx
     selected_room = st.selectbox("Select a room to edit:", df['display'])
     
     st.subheader("📝 Room Details")
