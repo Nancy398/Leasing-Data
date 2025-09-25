@@ -146,30 +146,49 @@ with tab1:
 
 
 with tab2:
-        st.subheader("Room Selection")
-        df['display'] = df['Property Name'] + ' - ' + df['Unit'] + ' - ' + df['Room']
-        for idx, row in df.iterrows():
-            if st.button(row['display'], key=f"btn_{idx}"):
-                st.session_state['selected_idx'] = idx
-        selected_room = st.selectbox("Select a room to edit:", df['display'])
-        
-        st.subheader("📝 Room Details")
-        if selected_room:
-            room = df[df['display']==selected_room].iloc[0]
-            st.text(f"Property: {room['Property']}")
-            st.text(f"Unit: {room['Unit']}")
-            st.text(f"Room: {room['Room']}")
-            st.text(f"Type: {room['Type']}")
-            
-            rent = st.number_input("Rent", value=float(room.get('Rent', 0) or 0))
-            notes = st.text_area("Notes", value=room.get('Notes',''))
+    st.subheader("Room Selection")
     
-            if st.button("Save Changes"):
-                # 写回 Google Sheets
-                scope = ["https://spreadsheets.google.com/feeds","https://www.googleapis.com/auth/drive"]
-                credentials = Credentials.from_service_account_info(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], scopes=scope)
-                gc = gspread.authorize(credentials)
-                ws = gc.open('Vacancy').worksheet('Full Book')
-                cell = ws.find(room['Property'])
-                ws.update(f"M{cell.row}:N{cell.row}", [[rent, notes]])
-                st.success(f"{room['Property']} - {room['Unit']} updated!")
+    # 创建 display 字段
+    df['display'] = df['Property Name'] + ' - ' + df['Unit'] + ' - ' + df['Room']
+    
+    # 搜索框
+    search_query = st.text_input("🔍 Search by Property, Unit or Room")
+    if search_query:
+        # 模糊匹配 display
+        filtered_df = df[df['display'].str.contains(search_query, case=False, na=False)]
+    else:
+        filtered_df = df
+    
+    # 选择房间
+    selected_room = st.selectbox("Select a room to edit:", filtered_df['display'])
+    
+    st.subheader("📝 Room Details")
+    if selected_room:
+        room = df[df['display']==selected_room].iloc[0]
+        st.text(f"Property: {room['Property']}")
+        st.text(f"Unit: {room['Unit']}")
+        st.text(f"Room: {room['Room']}")
+        st.text(f"Type: {room['Type']}")
+    
+        rent = st.number_input("Rent", value=float(room.get('Rent', 0) or 0))
+        notes = st.text_area("Notes", value=room.get('Notes',''))
+    
+        if st.button("Save Changes"):
+            # 写回 Google Sheets
+            scope = ["https://spreadsheets.google.com/feeds","https://www.googleapis.com/auth/drive"]
+            credentials = Credentials.from_service_account_info(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"], scopes=scope)
+            gc = gspread.authorize(credentials)
+            ws = gc.open('Vacancy').worksheet('Full Book')
+    
+            # 唯一定位行（Property + Unit + Room）
+            cells = ws.findall(room['Unit'])
+            for c in cells:
+                row_values = ws.row_values(c.row)
+                if row_values[0] == room['Property'] and row_values[2] == room['Room']:  # 假设 Property=colA, Room=colC
+                    header = ws.row_values(1)
+                    rent_col = header.index("Rent")+1
+                    notes_col = header.index("Notes")+1
+                    ws.update_cell(c.row, rent_col, rent)
+                    ws.update_cell(c.row, notes_col, notes)
+                    st.success(f"{room['Property']} - {room['Unit']} updated!")
+                    break
